@@ -9,13 +9,11 @@ router.post('/users', async (req, res)=>{
    const newUser = new User(req.body);
    try {
       await newUser.save();
-      console.log("new user is saved");
-      const token = await newUser.generateWebToken(req.connection?.remoteAddress);
+      const token = await newUser.generateWebToken("111.111");
       const fakeToken= "qsdlk57REl8Tqeruqerg.grqfbYtbi4g6t9vfgnbGogibntiognwdfh.PgdjfoinRbdfiubrvdfvoqaknonlkplcv";
       res.cookie("__noMeaning", fakeToken, { sameSite: "strict"});
       res.cookie('Authorization', token, {sameSite: "strict", httpOnly: true});
       res.header("Access-Control-Allow-Origin", "*");
-      console.log("header and cookie is saved");
       res.status(201).send({newUser});
    } catch (e) {
       res.status(400).send({error: e});
@@ -26,7 +24,7 @@ router.post('/users/login', async (req, res)=>{
    try {
       const myEmail =  req.body.email.toString().toLowerCase();
       const user = await User.findByCredentials(myEmail, req.body.password);
-      const token = await user.generateWebToken(req.connection?.remoteAddress);
+      const token = await user.generateWebToken("111.111");
       const fakeToken= "qsdlk57REl8Tqeruqerg.grqfbYtbi4g6t9vfgnbGogibntiognwdfh.PgdjfoinRbdfiubrvdfvoqaknonlkplcv";
       res.cookie("__noMeaning", fakeToken, { sameSite: "strict"});
       res.cookie("Authorization", token, {httpOnly: true, sameSite: "strict"});
