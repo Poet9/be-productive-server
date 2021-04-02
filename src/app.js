@@ -7,7 +7,7 @@ const taskRouter = require('./routers/taskRouter');
 
 const app = express();
 app.use(cors({
-   origin: 'http://localhost:3000',
+   origin: 'http://192.168.1.3:3000',
    allowedHeaders: ['content-type, Authorization, __noMeaning, Accept'],
    methods: 'POST, GET, PATCH, DELETE, OPTIONS',
    credentials: true
