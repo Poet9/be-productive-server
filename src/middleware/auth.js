@@ -10,7 +10,7 @@ const auth = async (req, res, next)=>{
          throw new Error();
       }
       const index = user.tokens.findIndex(storedtoken => token === storedtoken.token);
-      const matched = req.cookies.__noMeaning.includes(user.tokens[index].address);
+      const matched = user.tokens[index].address === req.connection?.localAddress;
       if(!matched){
          throw new Error()
       }

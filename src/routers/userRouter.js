@@ -3,23 +3,14 @@ const User = require('../models/user');
 const auth = require('../middleware/auth');
 
 const router = express.Router({strict: true});
-  const makeid = () =>{
-    var result = '';
-    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    var charactersLength = characters.length;
-    for ( var i = 0; i < 12; i++ ) {
-       result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
- }
+
 /**creating new user  **/
 router.post('/users', async (req, res)=>{
    const newUser = new User(req.body);
    try {
       await newUser.save();
-      const mySec = makeid();
-      const token = await newUser.generateWebToken(mySec);
-      const fakeToken= `eyqlk57REl8Tqeruqerg.gvfgn${mySec}bGogibntiognwdfh.PgdjfoinRbdfiubrvdfvoqaknonlkplcv`;
+      const token = await newUser.generateWebToken(req.connection?.localAddress);
+      const fakeToken= `eyqlk57REl8Tqeruqerg.gvfgnbGogibntiognwdfh.PgdjfoinRbdfiubrvdfvoqaknonlkplcv`;
       res.cookie("__noMeaning", fakeToken, { sameSite: "none", secure: true});
       res.cookie('Authorization', token, {sameSite: "none", httpOnly: true, secure: true});
       res.status(201).send({newUser});
@@ -32,9 +23,8 @@ router.post('/users/login', async (req, res)=>{
    try {
       const myEmail =  req.body.email.toString().toLowerCase();
       const user = await User.findByCredentials(myEmail, req.body.password);
-      const mySec = makeid();
-      const token = await newUser.generateWebToken(mySec);
-      const fakeToken= `eyqlk57REl8Tqeruqerg.vdfvoqa${mySec}bGogibntiognwdfh.PgdjfoinRbdfgvfNqUbrknonlkplcv`;
+      const token = await newUser.generateWebToken(req.connection?.localAddress);
+      const fakeToken= `eyqlk57REl8Tqeruqerg.vdfvoqabGogibntiognwdfh.PgdjfoinRbdfgvfNqUbrknonlkplcv`;
       res.cookie("__noMeaning", fakeToken, { sameSite: "none", secure: true});
       res.cookie("Authorization", token, {httpOnly: true, sameSite: "none", secure: true});
       res.send({user});
