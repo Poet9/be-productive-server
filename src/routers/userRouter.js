@@ -78,8 +78,8 @@ router.post('/users/logoutAll', auth, async (req, res)=>{
    try {
       req.user.tokens = [];
       await req.user.save();
-      res.clearCookie("__noMeaning");
-      res.clearCookie("Authorization");
+      res.clearCookie("__noMeaning", {sameSite: "none"});
+      res.clearCookie("Authorization", {sameSite: "none"});
       res.send({res: 'logged out successfully.'});
    } catch (e) {
       res.status(500).send({error: e});
@@ -89,8 +89,8 @@ router.post('/users/logoutAll', auth, async (req, res)=>{
 router.delete('/users/me', auth, async (req, res)=>{
    try {
       await req.user.remove();
-      res.clearCookie("__noMeaning");
-      res.clearCookie("Authorization");
+      res.clearCookie("__noMeaning", {sameSite: "none"});
+      res.clearCookie("Authorization", {sameSite: "none"});
       res.send({res: 'user deleted successfully.'})
    } catch (e) {
       res.status(500).send({error: e});
