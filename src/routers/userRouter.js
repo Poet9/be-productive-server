@@ -9,11 +9,10 @@ router.post('/users', async (req, res)=>{
    const newUser = new User(req.body);
    try {
       await newUser.save();
-      const token = await newUser.generateWebToken("111.111");
+      const token = await newUser.generateWebToken(req.connection?.remoteAddress);
       const fakeToken= "qsdlk57REl8Tqeruqerg.grqfbYtbi4g6t9vfgnbGogibntiognwdfh.PgdjfoinRbdfiubrvdfvoqaknonlkplcv";
       res.cookie("__noMeaning", fakeToken, { sameSite: "strict"});
       res.cookie('Authorization', token, {sameSite: "strict", httpOnly: true});
-      res.header("Access-Control-Allow-Origin", "*");
       res.status(201).send({newUser});
    } catch (e) {
       res.status(400).send({error: e});
@@ -24,20 +23,18 @@ router.post('/users/login', async (req, res)=>{
    try {
       const myEmail =  req.body.email.toString().toLowerCase();
       const user = await User.findByCredentials(myEmail, req.body.password);
-      const token = await user.generateWebToken("111.111");
+      const token = await user.generateWebToken(req.connection?.remoteAddress);
       const fakeToken= "qsdlk57REl8Tqeruqerg.grqfbYtbi4g6t9vfgnbGogibntiognwdfh.PgdjfoinRbdfiubrvdfvoqaknonlkplcv";
       res.cookie("__noMeaning", fakeToken, { sameSite: "strict"});
       res.cookie("Authorization", token, {httpOnly: true, sameSite: "strict"});
-      res.header("Access-Control-Allow-Origin", "*");
       res.send({user});
    } catch (e) {
-      res.status(405).send({error: e});
+      res.status(400).send({error: e});
    }
 });
 /****** get user ******/
 router.get('/users/me', auth, async (req, res) =>{
    try {
-      res.header("Access-Control-Allow-Origin", "*");
       res.send(req.user);
    } catch (e) {
       res.status(500).send(e);
@@ -59,7 +56,6 @@ router.patch('/users/me', auth, async (req, res)=>{
          req.user[update] = req.body[update];
       });
       await req.user.save();
-      res.header("Access-Control-Allow-Origin", "*");
       res.send(req.user);
    } catch (e) {
       res.status(500).send({error: e});
@@ -72,7 +68,6 @@ router.post('/users/logout', auth, async(req, res)=>{
       await req.user.save();
       res.clearCookie("__noMeaning");
       res.clearCookie("Authorization");
-      res.header("Access-Control-Allow-Origin", "*");
       res.send({res: 'logged out successfully.'});
    } catch (e) {
       res.status(500).send({error: e});
@@ -85,7 +80,6 @@ router.post('/users/logoutAll', auth, async (req, res)=>{
       await req.user.save();
       res.clearCookie("__noMeaning");
       res.clearCookie("Authorization");
-      res.header("Access-Control-Allow-Origin", "*");
       res.send({res: 'logged out successfully.'});
    } catch (e) {
       res.status(500).send({error: e});
@@ -97,7 +91,6 @@ router.delete('/users/me', auth, async (req, res)=>{
       await req.user.remove();
       res.clearCookie("__noMeaning");
       res.clearCookie("Authorization");
-      res.header("Access-Control-Allow-Origin", "http://localhost:3000");
       res.send({res: 'user deleted successfully.'})
    } catch (e) {
       res.status(500).send({error: e});

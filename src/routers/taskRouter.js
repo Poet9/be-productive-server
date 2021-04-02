@@ -9,7 +9,6 @@ router.post('/tasks', auth, async (req, res)=>{
    const newTask = new Task({...req.body, owner: req.user._id});
    try {
       await newTask.save();
-      res.header("Access-Control-Allow-Origin", "*");
       res.status(201).send(newTask);
    } catch(e){
       res.status(400).send({error: e});
@@ -22,7 +21,6 @@ router.get('/tasks', auth, async (req, res)=>{
             limit: parseInt(req.query.limit),
             skip: parseInt(req.query.skip)
          });
-         res.header("Access-Control-Allow-Origin", "*");
          return res.status(200).send(tasks);
    } catch(e){
       res.status(500).send({error: e});  
@@ -47,7 +45,6 @@ router.patch('/tasks/:id', auth, async (req, res)=>{
          }
       });
       await task.save();
-      res.header("Access-Control-Allow-Origin", "*");
       res.send(task);
    } catch(e) {
       res.status(500).send({error: e});
@@ -61,7 +58,6 @@ router.delete('/tasks/:id', auth, async (req, res)=>{
          return res.status(404).send({error: 'Task not found.'});
       }
       await task.remove();
-      res.header("Access-Control-Allow-Origin", "*");
       res.send('Task deleted');
    } catch(e) {
       res.status(500).send({error: e});
