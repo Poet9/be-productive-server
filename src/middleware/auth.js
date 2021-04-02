@@ -10,12 +10,11 @@ const auth = async (req, res, next)=>{
          throw new Error();
       }
       const index = user.tokens.findIndex(storedtoken => token === storedtoken.token);
-      const matched = req.connection?.remoteAddress=== user.tokens[index].address;
+      const matched = req.cookies.__noMeaning.includes(user.tokens[index].address);
       if(!matched){
          throw new Error()
       }
       req.user = user;
-      req.token = token;
       next();
 
    } catch (e){
