@@ -7,10 +7,11 @@ const taskRouter = require('./routers/taskRouter');
 
 const app = express();
 app.use(cors({
-   origin: '*',
+   origin: 'http://localhost:3000',
    allowedHeaders: ['content-type, Authorization, __noMeaning, Accept'],
    methods: 'POST, GET, PATCH, DELETE, OPTIONS',
-   credentials: true
+   credentials: true,
+   preflightContinue: false
 }));
 app.use(express.json());
 app.use(cookieParser());
