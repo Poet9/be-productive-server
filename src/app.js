@@ -10,8 +10,7 @@ app.use(cors({
    origin: '*',
    allowedHeaders: ['content-type, Authorization, __noMeaning, Accept'],
    methods: 'POST, GET, PATCH, DELETE, OPTIONS',
-   credentials: true,
-   preflightContinue: false
+   credentials: true
 }));
 app.use(express.json());
 app.use(cookieParser());
