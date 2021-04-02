@@ -10,7 +10,8 @@ app.use(cors({
    origin: 'http://192.168.1.3:3000',
    allowedHeaders: ['content-type, Authorization, __noMeaning, Accept'],
    methods: 'POST, GET, PATCH, DELETE, OPTIONS',
-   credentials: true
+   credentials: true,
+   preflightContinue: false
 }));
 app.use(express.json());
 app.use(cookieParser());
