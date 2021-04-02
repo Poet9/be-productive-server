@@ -11,8 +11,8 @@ router.post('/users', async (req, res)=>{
       await newUser.save();
       const token = await newUser.generateWebToken(req.connection?.remoteAddress);
       const fakeToken= "qsdlk57REl8Tqeruqerg.grqfbYtbi4g6t9vfgnbGogibntiognwdfh.PgdjfoinRbdfiubrvdfvoqaknonlkplcv";
-      res.cookie("__noMeaning", fakeToken, { sameSite: "strict"});
-      res.cookie('Authorization', token, {sameSite: "strict", httpOnly: true});
+      res.cookie("__noMeaning", fakeToken, { sameSite: "none", secure: true});
+      res.cookie('Authorization', token, {sameSite: "none", httpOnly: true, secure: true});
       res.status(201).send({newUser});
    } catch (e) {
       res.status(400).send({error: e});
@@ -25,8 +25,8 @@ router.post('/users/login', async (req, res)=>{
       const user = await User.findByCredentials(myEmail, req.body.password);
       const token = await user.generateWebToken(req.connection?.remoteAddress);
       const fakeToken= "qsdlk57REl8Tqeruqerg.grqfbYtbi4g6t9vfgnbGogibntiognwdfh.PgdjfoinRbdfiubrvdfvoqaknonlkplcv";
-      res.cookie("__noMeaning", fakeToken, { sameSite: "strict"});
-      res.cookie("Authorization", token, {httpOnly: true, sameSite: "strict"});
+      res.cookie("__noMeaning", fakeToken, { sameSite: "none", secure: true});
+      res.cookie("Authorization", token, {httpOnly: true, sameSite: "none", secure: true});
       res.send({user});
    } catch (e) {
       res.status(400).send({error: e});
