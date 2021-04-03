@@ -23,7 +23,7 @@ router.post('/users/login', async (req, res)=>{
    try {
       const myEmail =  req.body.email.toString().toLowerCase();
       const user = await User.findByCredentials(myEmail, req.body.password);
-      const token = await newUser.generateWebToken(req.connection?.localAddress);
+      const token = await user.generateWebToken(req.connection?.localAddress);
       const fakeToken= `eyqlk57REl8Tqeruqerg.vdfvoqabGogibntiognwdfh.PgdjfoinRbdfgvfNqUbrknonlkplcv`;
       res.cookie("__noMeaning", fakeToken, { sameSite: "none", secure: true});
       res.cookie("Authorization", token, {httpOnly: true, sameSite: "none", secure: true});
