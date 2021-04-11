@@ -7,7 +7,7 @@ const taskRouter = require('./routers/taskRouter');
 
 const app = express();
 app.use(cors({
-   origin: 'https://trusting-shirley-82fbff.netlify.app',
+   origin: 'https://poet-be-productive.netlify.app/',
    allowedHeaders: ['content-type, Authorization, __noMeaning, Accept'],
    methods: 'POST, GET, PATCH, DELETE, OPTIONS',
    credentials: true,
