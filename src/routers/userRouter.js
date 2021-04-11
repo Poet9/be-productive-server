@@ -12,7 +12,7 @@ router.post('/users', async (req, res)=>{
       const mailDomaine = newUser.email.split('@');
       dns.resolve(mailDomaine[1], (err, address)=>{
          if(err){
-            throw new Error('unvalid email.');
+            return res.status(400).send("Unvalid email.");
          }
       });
       await newUser.save();
