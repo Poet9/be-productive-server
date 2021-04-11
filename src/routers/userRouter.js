@@ -7,14 +7,14 @@ const router = express.Router({strict: true});
 
 /**creating new user  **/
 router.post('/users', async (req, res)=>{
+   const newUser = new User(req.body);
    try {
-      const mailDomaine = req.body.email.split('@');
+      const mailDomaine = newUser.email.split('@');
       dns.resolve(mailDomaine[1], (err, address)=>{
          if(err){
             throw new Error('unvalid email.');
          }
-      });  
-      const newUser = new User(req.body);
+      });
       await newUser.save();
       const token = await newUser.generateWebToken(req.connection?.localAddress);
       const fakeToken= `eyqlk57REl8Tqeruqerg.gvfgnbGogibntiognwdfh.PgdjfoinRbdfiubrvdfvoqaknonlkplcv`;
